@@ -4,15 +4,32 @@ document.addEventListener('DOMContentLoaded', function() {
     const TABLE_NAME = 'imagens-catalogo';
     const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
     const ALLOWED_FILE_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
+    const MODAL_PASSWORD = "senha123"; // Senha para acessar o modal
 
-    // Elementos do DOM
+    // Elementos do DOM - Modal
+    const modal = document.getElementById('uploadModal');
+    const openModalBtn = document.getElementById('openUploadModal');
+    const closeModalBtn = document.querySelector('.close-modal');
+    const passwordSection = document.querySelector('.password-section');
+    const confirmPasswordBtn = document.getElementById('confirmPassword');
+    const modalPasswordInput = document.getElementById('modalPassword');
+
+    // Elementos do DOM - Formulário
     const uploadForm = document.getElementById('uploadForm');
     const imageInput = document.getElementById('imageInput');
     const imagePreview = document.getElementById('imagePreview');
     const previewPlaceholder = document.querySelector('.preview-placeholder');
+    const imageTitleInput = document.getElementById('imageTitle');
+    const imageDescriptionInput = document.getElementById('imageDescription');
+
+    // Elementos da Galeria
     const galleryContainer = document.getElementById('galleryContainer');
 
-    // Carregar galeria inicial
+    // ======================
+    // FUNÇÕES PRINCIPAIS
+    // ======================
+
+    // Carregar galeria de imagens
     async function loadGalleryImages() {
         try {
             galleryContainer.innerHTML = '<p class="loading-message">Carregando imagens...</p>';
@@ -89,7 +106,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     title,
                     description,
                     image_url: publicUrl,
-                    file_name: fileName
+                    file_name: fileName,
+                    uploaded_at: new Date().toISOString()
                 }]);
 
             if (insertError) throw insertError;
@@ -123,17 +141,61 @@ document.addEventListener('DOMContentLoaded', function() {
         if (previewPlaceholder) previewPlaceholder.style.display = 'block';
     }
 
-    // Event listeners
+    function resetForm() {
+        uploadForm.reset();
+        resetPreview();
+    }
+
+    // ======================
+    // EVENT LISTENERS
+    // ======================
+
+    // Controle do Modal
+    openModalBtn.addEventListener('click', function() {
+        modal.style.display = 'block';
+        passwordSection.style.display = 'block';
+        uploadForm.classList.add('hidden');
+        resetForm();
+    });
+
+    closeModalBtn.addEventListener('click', function() {
+        modal.style.display = 'none';
+    });
+
+    window.addEventListener('click', function(event) {
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
+
+    // Validação de senha
+    confirmPasswordBtn.addEventListener('click', function() {
+        if (modalPasswordInput.value === MODAL_PASSWORD) {
+            passwordSection.style.display = 'none';
+            uploadForm.classList.remove('hidden');
+            modalPasswordInput.value = '';
+        } else {
+            alert('Senha incorreta!');
+        }
+    });
+
+    // Preview da imagem
     imageInput.addEventListener('change', function(e) {
         handleFilePreview(e.target.files[0]);
     });
 
+    // Envio do formulário
     uploadForm.addEventListener('submit', async function(e) {
         e.preventDefault();
         
         const file = imageInput.files[0];
-        const title = document.getElementById('imageTitle').value.trim();
-        const description = document.getElementById('imageDescription').value.trim();
+        const title = imageTitleInput.value.trim();
+        const description = imageDescriptionInput.value.trim();
+
+        // Desabilita o botão durante o upload
+        const submitBtn = this.querySelector('button[type="submit"]');
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Enviando...';
 
         try {
             if (!file) throw new Error('Selecione uma imagem');
@@ -142,14 +204,22 @@ document.addEventListener('DOMContentLoaded', function() {
             await uploadImage(file, title, description);
             
             alert('Imagem enviada com sucesso!');
-            uploadForm.reset();
-            resetPreview();
+            resetForm();
             await loadGalleryImages();
+            modal.style.display = 'none';
         } catch (error) {
             alert(`Erro: ${error.message}`);
+        } finally {
+            // Reabilita o botão
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Enviar Imagem';
         }
     });
 
-    // Iniciar a galeria
+    // ======================
+    // INICIALIZAÇÃO
+    // ======================
+
+    // Carrega a galeria quando a página é aberta
     loadGalleryImages();
 });

@@ -1,1 +1,1 @@
-# Feira---bom
+Página desenvolvida pela aluna Beatriz, para a Feira do Conhecimento, evento que acontece anualmente para a exposição de conteúdos aprendidos na escola durante os primeiro e segundo trimestres. Os trabalhos são escolhidos pelos alunos e orientados pelos professores. A exposição tem uma comissão organizadores composta por professores regentes e avaliados individualmente.

@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Galeria de Imagens - DTech</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <link rel="stylesheet" href="/styles/galeria.css" />
-  <link rel="stylesheet" href="/styles.css" />
+  <link rel="stylesheet" href="../styles/galeria.css" />
+  <link rel="stylesheet" href="../styles.css" />
   <link rel="shortcut icon" href="#" />
 </head>
 <body>
@@ -15,7 +15,7 @@
     <div class="header-overlay">
         <nav class="nav-bar">
             <div class="logo-container">
-                <img src="/imagens/turma.png" alt="DTech Logo" class="logo">
+                <img src="../imagens/turma.png" alt="DTech Logo" class="logo">
             </div>
             <div class="header-content">
                 <span class="titulo">2°ADS - 2025</span>
@@ -28,12 +28,12 @@
             </div>
 
             <ul class="navmenu" id="navMenu">
-                <li class="nav-item"><a href="/index.html" class="nav-link active"><i class="fas fa-home"></i> Home</a></li>
-                <li class="nav-item"><a href="/pages/curiosidades.html" class="nav-link"><i class="fas fa-question-circle"></i> Curiosidades</a></li>
+                <li class="nav-item"><a href="../index.html" class="nav-link active"><i class="fas fa-home"></i> Home</a></li>
+                <li class="nav-item"><a href="../pages/curiosidades.html" class="nav-link"><i class="fas fa-question-circle"></i> Curiosidades</a></li>
             </ul>
         </nav> 
     </div>
-</header>
+  </header>
 
   <main class="container">
     <section class="hero-section">
@@ -41,25 +41,36 @@
        <p><span class="sub_titulo">Explore as imagens históricas do nosso projeto.</span><br>
         Veja as fotos que capturam momentos importantes da nossa jornada de aprendizado e desenvolvimento.</p>
       </div>
+    </section>
+    
     <section class="gallery-container" id="galleryContainer">
       <!-- As imagens serão carregadas dinamicamente via JavaScript -->
       <div class="loading-message">Carregando galeria...</div>
     </section>
 
-    <section class="upload-section">
-      <h2>Enviar Nova Imagem</h2>
-      <form id="uploadForm" class="upload-form">
-        <div class="image-preview-container">
-          <img id="imagePreview" src="#" alt="Preview da imagem" class="image-preview">
-        </div>
-        <input type="file" id="imageInput" accept="image/*" class="file-input" required>
-        <input type="text" id="imageTitle" placeholder="Título da imagem" class="text-input" required>
-        <textarea id="imageDescription" placeholder="Descrição da imagem" rows="3" class="text-area"></textarea>
-        <button type="submit" class="submit-button">Enviar Imagem</button>
-      </form>
-    </section>
-
+    <!-- Botão para abrir o modal de upload -->
+    <button id="openUploadModal" class="upload-button">Enviar Nova Imagem</button>
     
+    <!-- Modal de Envio de Imagens -->
+    <div id="uploadModal" class="modal">
+      <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <h2>Enviar Nova Imagem</h2>
+        <div class="password-section">
+          <input type="password" id="modalPassword" placeholder="Digite a senha" class="text-input">
+          <button id="confirmPassword" class="submit-button">Confirmar</button>
+        </div>
+        <form id="uploadForm" class="upload-form hidden">
+          <div class="image-preview-container">
+            <img id="imagePreview" src="#" alt="Preview da imagem" class="image-preview">
+          </div>
+          <input type="file" id="imageInput" accept="image/*" class="file-input" required>
+          <input type="text" id="imageTitle" placeholder="Título da imagem" class="text-input" required>
+          <textarea id="imageDescription" placeholder="Descrição da imagem" rows="3" class="text-area"></textarea>
+          <button type="submit" class="submit-button">Enviar Imagem</button>
+        </form>
+      </div>
+    </div>
   </main>
 
   <footer class="footer">
@@ -72,8 +83,9 @@
   </footer>
 
   <!-- Scripts -->
-  <script src="/scripts/supabase.js"></script>
-  <script src="/scripts/galeria.js"></script>
+  <script src="../scripts/supabase.js"></script>
+  <script src="../scripts/galeria.js"></script>
+
   <script src="../main.js"></script>
 </body>
 </html>
